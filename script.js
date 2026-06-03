@@ -4,14 +4,24 @@ function addTask() {
   if (text === "") return;
 
   const li = document.createElement("li");
-  li.innerHTML = `
-    <span>${text}</span>
-    <button class="edit-btn">✏️</button>
-    <button class="delete-btn">❌</button>
-  `;
 
-  li.querySelector(".edit-btn").addEventListener("click", () => editTask(li));
-  li.querySelector(".delete-btn").addEventListener("click", () => li.remove());
+  const span = document.createElement("span");
+  span.textContent = text;
+
+  const editBtn = document.createElement("button");
+  editBtn.textContent = "✏️";
+  editBtn.className = "edit-btn";
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "❌";
+  deleteBtn.className = "delete-btn";
+
+  li.appendChild(span);
+  li.appendChild(editBtn);
+  li.appendChild(deleteBtn);
+
+  editBtn.addEventListener("click", () => editTask(li));
+  deleteBtn.addEventListener("click", () => li.remove());
 
   document.getElementById("taskList").appendChild(li);
   input.value = "";
@@ -42,8 +52,17 @@ function editTask(li) {
       li.replaceChild(editBtn, saveBtn);
     }
   });
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") saveBtn.click();
+  });
 }
 
+document.getElementById("addBtn").addEventListener("click", addTask);
+
 document.getElementById("taskInput").addEventListener("keydown", (e) => {
-  if (e.key === "Enter") addTask();
+  if (e.key === "Enter") {
+    e.preventDefault();
+    addTask();
+  }
 });
