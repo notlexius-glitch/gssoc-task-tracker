@@ -1,68 +1,41 @@
-function addTask() {
-  const input = document.getElementById("taskInput");
-  const text = input.value.trim();
-  if (text === "") return;
+const apiKey = "YOUR_API_KEY";
 
-  const li = document.createElement("li");
+async function getWeather() {
+    const city = document.getElementById("cityInput").value.trim();
+    const errorMsg = document.getElementById("errorMsg");
+    const weatherCard = document.getElementById("weatherCard");
 
-  const span = document.createElement("span");
-  span.textContent = text;
-
-  const editBtn = document.createElement("button");
-  editBtn.textContent = "✏️";
-  editBtn.className = "edit-btn";
-
-  const deleteBtn = document.createElement("button");
-  deleteBtn.textContent = "❌";
-  deleteBtn.className = "delete-btn";
-
-  li.appendChild(span);
-  li.appendChild(editBtn);
-  li.appendChild(deleteBtn);
-
-  editBtn.addEventListener("click", () => editTask(li));
-  deleteBtn.addEventListener("click", () => li.remove());
-
-  document.getElementById("taskList").appendChild(li);
-  input.value = "";
-}
-
-function editTask(li) {
-  const span = li.querySelector("span");
-  const editBtn = li.querySelector(".edit-btn");
-
-  const input = document.createElement("input");
-  input.type = "text";
-  input.value = span.textContent;
-  input.className = "edit-input";
-
-  const saveBtn = document.createElement("button");
-  saveBtn.textContent = "💾";
-  saveBtn.className = "save-btn";
-
-  li.replaceChild(input, span);
-  li.replaceChild(saveBtn, editBtn);
-  input.focus();
-
-  saveBtn.addEventListener("click", () => {
-    const val = input.value.trim();
-    if (val) {
-      span.textContent = val;
-      li.replaceChild(span, input);
-      li.replaceChild(editBtn, saveBtn);
+    if (city === "") {
+        errorMsg.textContent = "Please enter a city name";
+        weatherCard.style.display = "none";
+        return;
     }
-  });
 
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") saveBtn.click();
-  });
+    try {
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.cod !== 200) {
+        if (data.cod == 401) {
+        errorMsg.textContent = "Invalid API key. Please add a valid OpenWeatherMap API key.";
+    } else {
+        errorMsg.textContent = "City not found";
+    }
+    weatherCard.style.display = "none";
+    return;
 }
 
-document.getElementById("addBtn").addEventListener("click", addTask);
+        document.getElementById("cityName").textContent = data.name;
+        document.getElementById("temperature").textContent = `Temperature: ${data.main.temp} °C`;
+        document.getElementById("humidity").textContent = `Humidity: ${data.main.humidity}%`;
+        document.getElementById("condition").textContent = `Condition: ${data.weather[0].description}`;
 
-document.getElementById("taskInput").addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    addTask();
-  }
-});
+        errorMsg.textContent = "";
+        weatherCard.style.display = "block";
+    } catch (error) {
+        errorMsg.textContent = "Something went wrong. Please try again.";
+        weatherCard.style.display = "none";
+    }
+}
