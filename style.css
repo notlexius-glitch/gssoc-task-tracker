@@ -26,6 +26,19 @@ li {
   margin-top: 10px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   background: #eee;
   padding: 5px;
+  cursor: grab;
+  user-select: none;
+}
+
+li.dragging {
+  opacity: 0.4;
+}
+
+.drag-handle {
+  cursor: grab;
+  color: #999;
+  margin-right: 4px;
 }
