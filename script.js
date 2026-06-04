@@ -1,33 +1,58 @@
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function renderTasks() {
+  const taskList = document.getElementById("taskList");
+  taskList.innerHTML = "";
+
+  tasks.forEach((task, index) => {
+    const li = document.createElement("li");
+
+    const span = document.createElement("span");
+    span.textContent = task;
+
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "✏️";
+    editBtn.className = "edit-btn";
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "❌";
+    deleteBtn.className = "delete-btn";
+
+    li.appendChild(span);
+    li.appendChild(editBtn);
+    li.appendChild(deleteBtn);
+
+    editBtn.addEventListener("click", () => editTask(li, index));
+    
+    deleteBtn.addEventListener("click", () => {
+      tasks.splice(index, 1);
+      saveTasks();
+      renderTasks();
+    });
+
+    taskList.appendChild(li);
+  });
+}
+
 function addTask() {
   const input = document.getElementById("taskInput");
   const text = input.value.trim();
+
   if (text === "") return;
 
-  const li = document.createElement("li");
+  tasks.push(text);
 
-  const span = document.createElement("span");
-  span.textContent = text;
+  saveTasks();
+  renderTasks();
 
-  const editBtn = document.createElement("button");
-  editBtn.textContent = "✏️";
-  editBtn.className = "edit-btn";
-
-  const deleteBtn = document.createElement("button");
-  deleteBtn.textContent = "❌";
-  deleteBtn.className = "delete-btn";
-
-  li.appendChild(span);
-  li.appendChild(editBtn);
-  li.appendChild(deleteBtn);
-
-  editBtn.addEventListener("click", () => editTask(li));
-  deleteBtn.addEventListener("click", () => li.remove());
-
-  document.getElementById("taskList").appendChild(li);
   input.value = "";
 }
 
-function editTask(li) {
+function editTask(li, index) {
   const span = li.querySelector("span");
   const editBtn = li.querySelector(".edit-btn");
 
@@ -42,19 +67,24 @@ function editTask(li) {
 
   li.replaceChild(input, span);
   li.replaceChild(saveBtn, editBtn);
+
   input.focus();
 
   saveBtn.addEventListener("click", () => {
     const val = input.value.trim();
+
     if (val) {
-      span.textContent = val;
-      li.replaceChild(span, input);
-      li.replaceChild(editBtn, saveBtn);
+      tasks[index] = val;
+
+      saveTasks();
+      renderTasks();
     }
   });
 
   input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") saveBtn.click();
+    if (e.key === "Enter") {
+      saveBtn.click();
+    }
   });
 }
 
@@ -66,3 +96,5 @@ document.getElementById("taskInput").addEventListener("keydown", (e) => {
     addTask();
   }
 });
+
+renderTasks();
