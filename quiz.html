@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz App</title>
+  <link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+  <main class="quiz-card">
+    <a class="back-link" href="index.html">Back to Task Tracker</a>
+    <section id="quiz" aria-live="polite">
+      <p id="progress" class="progress"></p>
+      <h1 id="question"></h1>
+      <div id="options" class="options"></div>
+      <button id="nextBtn" class="primary-button" type="button" disabled>Next Question</button>
+    </section>
+
+    <section id="result" class="result" hidden aria-live="polite">
+      <h1>Quiz complete!</h1>
+      <p id="score"></p>
+      <button id="restartBtn" class="primary-button" type="button">Try Again</button>
+    </section>
+  </main>
+  <script src="quiz.js"></script>
+</body>
+</html>
