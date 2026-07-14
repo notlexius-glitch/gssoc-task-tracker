@@ -1,0 +1,165 @@
+:root {
+  color: #172033;
+  background: #eef2f7;
+  font-family: Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 32px 16px;
+}
+
+.expense-app {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(23, 32, 51, 0.1);
+}
+
+a {
+  color: #185abc;
+}
+
+h1,
+h2 {
+  margin-top: 0;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.summary div {
+  padding: 16px;
+  background: #f3f6fa;
+  border-radius: 8px;
+}
+
+.summary span,
+.summary strong {
+  display: block;
+}
+
+.summary span {
+  margin-bottom: 8px;
+  color: #536174;
+  font-size: 0.9rem;
+}
+
+.summary strong {
+  font-size: 1.25rem;
+}
+
+form {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+input,
+select,
+button {
+  min-height: 40px;
+  padding: 8px 10px;
+  font: inherit;
+}
+
+button {
+  margin-top: 8px;
+  color: #ffffff;
+  background: #185abc;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #12478f;
+}
+
+.form-message {
+  min-height: 20px;
+  margin: 0;
+  color: #b42318;
+}
+
+.transactions {
+  display: grid;
+  gap: 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.transaction {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px;
+  border: 1px solid #d9e0e8;
+  border-radius: 6px;
+}
+
+.transaction-info {
+  min-width: 0;
+}
+
+.transaction-info strong,
+.transaction-info span {
+  display: block;
+}
+
+.transaction-info span {
+  margin-top: 4px;
+  color: #536174;
+  font-size: 0.85rem;
+}
+
+.transaction.income .transaction-amount {
+  color: #16794c;
+}
+
+.transaction.expense .transaction-amount {
+  color: #b42318;
+}
+
+.delete-transaction {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 6px 10px;
+  color: #b42318;
+  background: #ffffff;
+  border: 1px solid #e2aaa5;
+}
+
+.delete-transaction:hover {
+  color: #ffffff;
+  background: #b42318;
+}
+
+@media (max-width: 560px) {
+  body {
+    padding: 16px 10px;
+  }
+
+  .expense-app {
+    padding: 18px;
+  }
+
+  .summary {
+    grid-template-columns: 1fr;
+  }
+
+  .transaction {
+    align-items: flex-start;
+  }
+}
