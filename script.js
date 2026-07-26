@@ -1,4 +1,10 @@
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+let tasks;
+try {
+  tasks = JSON.parse(localStorage.getItem("tasks"));
+  if (!Array.isArray(tasks)) tasks = [];
+} catch {
+  tasks = [];
+}
 
 function saveTasks() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -65,25 +71,38 @@ function editTask(li, index) {
   saveBtn.textContent = "💾";
   saveBtn.className = "save-btn";
 
+  const cancelBtn = document.createElement("button");
+  cancelBtn.textContent = "❌";
+  cancelBtn.className = "cancel-btn";
+
   li.replaceChild(input, span);
   li.replaceChild(saveBtn, editBtn);
+  li.appendChild(cancelBtn);
 
   input.focus();
 
-  saveBtn.addEventListener("click", () => {
+  function saveEdit() {
     const val = input.value.trim();
 
     if (val) {
       tasks[index] = val;
-
       saveTasks();
-      renderTasks();
     }
-  });
+    renderTasks();
+  }
+
+  function cancelEdit() {
+    renderTasks();
+  }
+
+  saveBtn.addEventListener("click", saveEdit);
+  cancelBtn.addEventListener("click", cancelEdit);
 
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
-      saveBtn.click();
+      saveEdit();
+    } else if (e.key === "Escape") {
+      cancelEdit();
     }
   });
 }
