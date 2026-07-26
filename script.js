@@ -1,4 +1,9 @@
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+let tasks = [];
+try {
+  tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+} catch (e) {
+  tasks = [];
+}
 
 function saveTasks() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -6,6 +11,7 @@ function saveTasks() {
 
 function renderTasks() {
   const taskList = document.getElementById("taskList");
+  if (!taskList) return;
   taskList.innerHTML = "";
 
   tasks.forEach((task, index) => {
