@@ -1,4 +1,10 @@
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+let tasks;
+try {
+  tasks = JSON.parse(localStorage.getItem("tasks"));
+  if (!Array.isArray(tasks)) tasks = [];
+} catch {
+  tasks = [];
+}
 
 function saveTasks() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -75,10 +81,9 @@ function editTask(li, index) {
 
     if (val) {
       tasks[index] = val;
-
       saveTasks();
-      renderTasks();
     }
+    renderTasks();
   });
 
   input.addEventListener("keydown", (e) => {
