@@ -75,10 +75,10 @@ function editTask(li, index) {
 
     if (val) {
       tasks[index] = val;
-
-      saveTasks();
-      renderTasks();
     }
+
+    saveTasks();
+    renderTasks();
   });
 
   input.addEventListener("keydown", (e) => {
